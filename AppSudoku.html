@@ -82,25 +82,38 @@
             font-weight: 400;
         }
 
-        /* Botones móviles */
+        /* Botones móviles con etiquetas */
         .mobile-btn {
             background: rgba(255, 255, 255, 0.2);
             border: none;
-            width: 44px;
-            height: 44px;
             border-radius: 50%;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 1.2rem;
             cursor: pointer;
             transition: all 0.3s ease;
+            position: relative;
+            padding: 10px;
+            min-width: 70px;
+            height: auto;
         }
 
         .mobile-btn:hover {
             background: rgba(255, 255, 255, 0.3);
             transform: scale(1.05);
+        }
+
+        .btn-icon {
+            font-size: 1.4rem;
+            margin-bottom: 4px;
+        }
+
+        .btn-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            opacity: 0.9;
         }
 
         /* Panel de categorías */
@@ -135,6 +148,13 @@
         .panel-header h2 {
             color: var(--secondary);
             font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .panel-header h2 i {
+            color: var(--primary);
         }
 
         .close-panel {
@@ -143,6 +163,17 @@
             font-size: 1.5rem;
             color: var(--primary);
             cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background-color 0.3s;
+        }
+
+        .close-panel:hover {
+            background-color: #f5f5f5;
         }
 
         .category-list {
@@ -374,11 +405,23 @@
             }
             
             .category-panel {
-                width: 300px;
+                width: 320px;
             }
             
             .filter-panel {
                 width: 350px;
+            }
+            
+            .mobile-btn {
+                min-width: 80px;
+            }
+            
+            .btn-icon {
+                font-size: 1.6rem;
+            }
+            
+            .btn-label {
+                font-size: 0.8rem;
             }
         }
 
@@ -519,9 +562,10 @@
             height: 60px;
             border-radius: 50%;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             box-shadow: 0 4px 15px rgba(229, 57, 53, 0.4);
             z-index: 100;
             cursor: pointer;
@@ -532,6 +576,12 @@
         .floating-filter-btn:hover {
             transform: scale(1.1);
             box-shadow: 0 6px 20px rgba(229, 57, 53, 0.6);
+        }
+
+        .floating-btn-label {
+            font-size: 0.6rem;
+            margin-top: 2px;
+            font-weight: 600;
         }
 
         /* Mensaje sin resultados */
@@ -596,7 +646,7 @@
         .category-indicator {
             position: absolute;
             top: -5px;
-            left: -5px;
+            right: -5px;
             background: var(--accent);
             color: var(--secondary);
             width: 20px;
@@ -618,6 +668,23 @@
             border-radius: 12px;
             margin-left: auto;
         }
+
+        /* Instrucciones */
+        .instructions {
+            text-align: center;
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            padding: 0.8rem;
+            background-color: #f9f9f9;
+            border-radius: var(--border-radius);
+            border-left: 4px solid var(--accent);
+        }
+
+        .instructions i {
+            color: var(--primary);
+            margin-right: 5px;
+        }
     </style>
 </head>
 <body>
@@ -626,7 +693,8 @@
         <div class="container header-content">
             <div style="position: relative;">
                 <button class="mobile-btn" id="categoryToggle">
-                    <i class="fas fa-bars"></i>
+                    <i class="fas fa-bars btn-icon"></i>
+                    <span class="btn-label">Categorías</span>
                 </button>
                 <div class="category-indicator" id="categoryIndicator" style="display: none;">1</div>
             </div>
@@ -641,7 +709,8 @@
             
             <div style="position: relative;">
                 <button class="mobile-btn" id="filterToggle">
-                    <i class="fas fa-filter"></i>
+                    <i class="fas fa-filter btn-icon"></i>
+                    <span class="btn-label">Filtros</span>
                 </button>
                 <div class="filter-indicator" id="filterIndicator" style="display: none;">0</div>
             </div>
@@ -651,10 +720,15 @@
     <!-- Panel de Categorías -->
     <div class="category-panel" id="categoryPanel">
         <div class="panel-header">
-            <h2><i class="fas fa-utensils"></i> Categorías</h2>
+            <h2><i class="fas fa-list"></i> Categorías</h2>
             <button class="close-panel" id="closeCategory">
                 <i class="fas fa-times"></i>
             </button>
+        </div>
+        
+        <div style="margin-bottom: 1.5rem; color: #666; font-size: 0.9rem; padding: 0.5rem;">
+            <i class="fas fa-info-circle" style="color: var(--accent); margin-right: 5px;"></i>
+            Selecciona una categoría para filtrar los platos por tipo.
         </div>
         
         <ul class="category-list" id="categoryList">
@@ -671,8 +745,13 @@
             </button>
         </div>
         
+        <div style="margin-bottom: 1.5rem; color: #666; font-size: 0.9rem; padding: 0.5rem;">
+            <i class="fas fa-info-circle" style="color: var(--accent); margin-right: 5px;"></i>
+            Selecciona tus preferencias alimentarias para ver platos adecuados.
+        </div>
+        
         <div class="filter-group">
-            <h3><i class="fas fa-heart"></i> Preferencias</h3>
+            <h3><i class="fas fa-heart"></i> Preferencias Dietéticas</h3>
             <div class="filter-options">
                 <div class="filter-option" data-filter="vegetariano">
                     <i class="fas fa-leaf"></i> Vegetariano
@@ -690,7 +769,7 @@
         </div>
         
         <div class="filter-group">
-            <h3><i class="fas fa-allergies"></i> Alergias/Restricciones</h3>
+            <h3><i class="fas fa-allergies"></i> Alergias y Restricciones</h3>
             <div class="filter-options">
                 <div class="filter-option" data-filter="sin-pescado">
                     <i class="fas fa-fish"></i> Sin Pescado
@@ -705,7 +784,7 @@
         </div>
         
         <div class="filter-group">
-            <h3><i class="fas fa-pepper-hot"></i> Nivel Picante</h3>
+            <h3><i class="fas fa-pepper-hot"></i> Nivel de Picante</h3>
             <div class="filter-options">
                 <div class="filter-option" data-filter="picante">
                     <i class="fas fa-pepper-hot"></i> Picante
@@ -716,8 +795,12 @@
             </div>
         </div>
         
-        <button class="filter-option active" style="width: 100%; background: var(--primary); color: white; justify-content: center; margin-top: 1rem;" id="applyFilters">
-            <i class="fas fa-check"></i> Aplicar Filtros
+        <button class="filter-option active" style="width: 100%; background: var(--primary); color: white; justify-content: center; margin-top: 1rem; padding: 1rem;" id="applyFilters">
+            <i class="fas fa-check"></i> Aplicar Filtros Seleccionados
+        </button>
+        
+        <button class="filter-option" style="width: 100%; justify-content: center; margin-top: 0.5rem; padding: 0.8rem;" id="clearAllFiltersBtn">
+            <i class="fas fa-times"></i> Limpiar Todos los Filtros
         </button>
     </div>
 
@@ -727,6 +810,11 @@
     <!-- Contenido Principal -->
     <main class="container">
         <h1 class="menu-title">Nuestro <span>Menú de Sushi</span></h1>
+        
+        <div class="instructions">
+            <i class="fas fa-lightbulb"></i>
+            Usa <strong>Categorías</strong> para filtrar por tipo de plato y <strong>Filtros</strong> para ajustar según tus preferencias alimentarias.
+        </div>
         
         <div class="active-filters" id="activeFilters">
             <span>Filtros activos:</span>
@@ -753,6 +841,7 @@
     <!-- Botón flotante para filtros -->
     <button class="floating-filter-btn" id="floatingFilterBtn">
         <i class="fas fa-filter"></i>
+        <span class="floating-btn-label">Filtros</span>
     </button>
 
     <script>
@@ -927,6 +1016,7 @@
         const activeFiltersContainer = document.getElementById('activeFilters');
         const activeFiltersText = document.getElementById('activeFiltersText');
         const applyFiltersBtn = document.getElementById('applyFilters');
+        const clearAllFiltersBtn = document.getElementById('clearAllFiltersBtn');
         const filterOptions = document.querySelectorAll('.filter-option');
         const filterIndicator = document.getElementById('filterIndicator');
         const categoryIndicator = document.getElementById('categoryIndicator');
@@ -970,8 +1060,8 @@
 
         // Manejo de filtros
         filterOptions.forEach(option => {
-            // Evitar el botón de aplicar filtros
-            if (option.id !== 'applyFilters') {
+            // Evitar los botones de aplicar y limpiar filtros
+            if (option.id !== 'applyFilters' && option.id !== 'clearAllFiltersBtn') {
                 option.addEventListener('click', function() {
                     this.classList.toggle('active');
                 });
@@ -988,7 +1078,7 @@
             // Obtener filtros seleccionados
             const selectedOptions = document.querySelectorAll('.filter-option.active');
             selectedOptions.forEach(option => {
-                if (option.id !== 'applyFilters') {
+                if (option.id !== 'applyFilters' && option.id !== 'clearAllFiltersBtn') {
                     const filterValue = option.getAttribute('data-filter');
                     
                     // Categorizar filtros
@@ -1006,6 +1096,12 @@
             updateActiveFiltersDisplay();
             renderMenuItems();
             updateFilterIndicator();
+            hideFilterPanel();
+        });
+
+        // Limpiar todos los filtros
+        clearAllFiltersBtn.addEventListener('click', () => {
+            clearAllFilters();
             hideFilterPanel();
         });
 
@@ -1183,19 +1279,29 @@
             // Mostrar mensaje si no hay resultados
             if (filteredItems.length === 0) {
                 const categoryName = categories.find(cat => cat.id === activeCategory)?.name || "esta categoría";
+                const hasFilters = activeFilters.preferences.length > 0 || activeFilters.restrictions.length > 0 || activeFilters.spice.length > 0;
+                
+                let message = `No hay items en <strong>${categoryName}</strong>`;
+                if (hasFilters) {
+                    message += ` que cumplan con los filtros seleccionados.`;
+                } else {
+                    message += ` en este momento.`;
+                }
                 
                 menuGrid.innerHTML = `
                     <div class="no-results">
                         <i class="fas fa-search"></i>
-                        <h3>No encontramos platos con esos filtros</h3>
-                        <p>No hay items en ${categoryName.toLowerCase()} que cumplan con los filtros seleccionados.</p>
-                        <button class="clear-filters" style="padding: 0.8rem 1.5rem; font-size: 1rem; margin-right: 10px;" id="clearFiltersBtn">Limpiar filtros</button>
-                        <button class="clear-filters" style="padding: 0.8rem 1.5rem; font-size: 1rem; background: var(--primary); color: white;" id="showAllBtn">Ver todos</button>
+                        <h3>No encontramos platos</h3>
+                        <p>${message}</p>
+                        ${hasFilters ? `<button class="clear-filters" style="padding: 0.8rem 1.5rem; font-size: 1rem; margin-right: 10px;" id="clearFiltersBtn">Limpiar filtros</button>` : ''}
+                        <button class="clear-filters" style="padding: 0.8rem 1.5rem; font-size: 1rem; background: var(--primary); color: white;" id="showAllBtn">Ver todos los platos</button>
                     </div>
                 `;
                 
                 // Añadir event listeners a los botones
-                document.getElementById('clearFiltersBtn').addEventListener('click', clearAllFilters);
+                if (hasFilters) {
+                    document.getElementById('clearFiltersBtn')?.addEventListener('click', clearAllFilters);
+                }
                 document.getElementById('showAllBtn').addEventListener('click', () => {
                     activeCategory = "todos";
                     updateCategoryUI();
@@ -1261,7 +1367,7 @@
             
             // Desmarcar todos los botones de filtro
             filterOptions.forEach(option => {
-                if (option.id !== 'applyFilters') {
+                if (option.id !== 'applyFilters' && option.id !== 'clearAllFiltersBtn') {
                     option.classList.remove('active');
                 }
             });
